@@ -1,0 +1,7 @@
+{
+  "domain": "http://localhost:3000",
+  "oauth": {
+    "client_id": "COFFEE_CUP_UID",
+    "secret": "COFFEE_CUP_SECRET",
+  },
+}

@@ -7,6 +7,7 @@ import Config from './Config';
 
 const AUTHORIZE_URL = `${Config().domain}/oauth/authorize`;
 const TOKEN_URL = `${Config().domain}/oauth/token`;
+const LOGOUT_URL =  `${Config().domain}${Config().logout_path}`;
 const CLIENT_ID = Config().oauth.client_id;
 const CLIENT_SECRET = Config().oauth.secret;
 const REDIRECT_URL = "urn:ietf:wg:oauth:2.0:oob";
@@ -23,6 +24,17 @@ class OAuthClient {
 
   getAccessToken() {
     return this.hasTokens() && this.accessToken;
+  }
+
+  async logout() {
+    try {
+      await AsyncStorage.removeItem(TOKENS_STORAGE_KEY);
+      this.accessToken = this.refreshToken = this.expiresAt = null;
+      console.log('Tokens removed.');
+    } catch (error) {
+      console.warn('AsyncStorage error: ' + error.message);
+      throw error;
+    }
   }
 
   async initialize() {
@@ -70,6 +82,10 @@ class OAuthClient {
     } catch (error) {
       console.log('AsyncStorage error: ' + error.message);
     }
+  }
+
+  logoutURL() {
+    return LOGOUT_URL;
   }
 
   authorizeURL() {

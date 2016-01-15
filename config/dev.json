@@ -1,5 +1,7 @@
 {
   "domain": "http://localhost:3000",
+  "oauth_login_path": "/login/oauth",
+  "logout_path": "/logout",
   "oauth": {
     "client_id": "COFFEE_CUP_UID",
     "secret": "COFFEE_CUP_SECRET",

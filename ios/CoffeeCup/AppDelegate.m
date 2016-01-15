@@ -11,11 +11,26 @@
 
 #import "RCTRootView.h"
 
+#import "RCTLinkingManager.h"
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSURL *jsCodeLocation;
+  
+  /** Setting UserAgent **/
+  UIWebView* tempWebView = [[UIWebView alloc] initWithFrame:CGRectZero];
+  NSString* userAgent = [tempWebView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+  
+  // Get the native app version and append it to user agent.
+  NSString *nativeAppVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+  userAgent = [userAgent stringByAppendingString: [NSString stringWithFormat:@" CoffeeCup/%@", nativeAppVersion]];
+  
+  // Store the full user agent in NSUserDefaults to be used by real web view.
+  NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:userAgent, @"UserAgent", nil];
+  [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
+  /** End Setting UserAgent **/
 
   /**
    * Loading JavaScript code - uncomment the one you want.
@@ -52,6 +67,24 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   return YES;
+}
+
+// Handling deep links
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+  return [RCTLinkingManager application:application openURL:url
+                      sourceApplication:sourceApplication annotation:annotation];
+}
+
+// Only if your app is using [Universal Links](https://developer.apple.com/library/prerelease/ios/documentation/General/Conceptual/AppSearch/UniversalLinks.html).
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity
+ restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
+{
+  return [RCTLinkingManager application:application
+                   continueUserActivity:userActivity
+                     restorationHandler:restorationHandler];
 }
 
 @end

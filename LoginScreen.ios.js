@@ -21,6 +21,11 @@ class LoginScreen extends Component {
     this.oauthClient = props.oauthClient;
     this.onNavigationStateChange = this.onNavigationStateChange.bind(this);
     this.onShouldStartLoadWithRequest = this.onShouldStartLoadWithRequest.bind(this);
+    this._webViewURL = this._webViewURL.bind(this);
+  }
+
+  _webViewURL() {
+    return this.oauthClient.authorizeURL();
   }
 
   render() {
@@ -30,7 +35,7 @@ class LoginScreen extends Component {
           ref={WEBVIEW_REF}
           automaticallyAdjustContentInsets={true}
           style={styles.webView}
-          url={this.oauthClient.authorizeURL()}
+          url={this._webViewURL()}
           javaScriptEnabled={true}
           domStorageEnabled={true}
           onNavigationStateChange={this.onNavigationStateChange}
@@ -51,7 +56,8 @@ class LoginScreen extends Component {
     if (navState.url && navState.loading == false) {
       let authCode = this.oauthClient.codeFromURL(navState.url);
       if (authCode) {
-        this.oauthClient.accessTokenFromCode(authCode).then(this.props.onAccessTokenFetched);
+        this.oauthClient.accessTokenFromCode(authCode)
+        .then(this.props.onAccessTokenFetched);
       }
     }
     this.setState({
@@ -62,6 +68,7 @@ class LoginScreen extends Component {
 
 var styles = StyleSheet.create({
   container: {
+    paddingTop: 20,
     flex: 1,
   },
   webView: {

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= ['CoffeeCup', yield(:title)].join(' | ') %></title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <script type="text/javascript">
+    $(document).on("page:load load", function() {
+      console.log("page loaded");
+      this.window.location.hash = new Date();
+    });
+  </script>
+  <%= csrf_meta_tags %>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+</head>
+<body class="<%= params[:controller].parameterize %> <%= params[:action].parameterize %>">
+<nav class="navbar navbar-dark bg-inverse">
+  <a class="navbar-brand" href="#">Coffee Cup</a>
+  <ul class="nav navbar-nav">
+    <li class="nav-item active">
+      <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+      <% if current_user %>
+        <%= link_to "Logout #{current_user.name}", logout_url, class: "nav-link" %>
+      <% else %>
+        <%= link_to 'Login', login_url, class: "nav-link" %>
+      <% end %>
+    </li>
+  </ul>
+</nav>
+
+<div class="container">
+<%= yield %>
+</div><!-- /.container -->
+
+</body>
+</html>

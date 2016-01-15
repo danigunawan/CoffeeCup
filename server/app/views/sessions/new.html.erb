@@ -1,0 +1,15 @@
+<h1>Coffee Cup</h1>
+
+<%= form_tag login_url do %>
+  <fieldset class="form-group">
+    <label for="email" class="sr-only">Email</label>
+    <%= email_field_tag :email, "", placeholder: "Email", class: "form-control form-control-lg" %>
+  </fieldset>
+  <fieldset class="form-group">
+    <label for="password" class="sr-only">Password</label>
+    <%= password_field_tag :password, "", placeholder: "Password", class: "form-control form-control-lg" %>
+  </fieldset>
+  <hr>
+  <%= submit_tag "Login", class: "btn btn-primary btn-lg btn-block" %>
+  <%= link_to "Sign up", sign_up_url, class: "btn btn-secondary btn-lg btn-block" %>
+<% end %>

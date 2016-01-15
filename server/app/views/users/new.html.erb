@@ -1,0 +1,22 @@
+<h1>Sign Up</h1>
+
+<%= form_for :user, url: register_url do |f| %>
+  <fieldset class="form-group">
+    <%= f.text_field :name, placeholder: "Name", class: "form-control form-control-lg" %>
+  </fieldset>
+  <fieldset class="form-group">
+    <label for="email" class="sr-only">Email</label>
+    <%= f.email_field :email, placeholder: "Email", class: "form-control form-control-lg" %>
+  </fieldset>
+  <fieldset class="form-group">
+    <label for="password" class="sr-only">Password</label>
+    <%= f.password_field :password, placeholder: "Password", class: "form-control form-control-lg" %>
+  </fieldset>
+  <fieldset class="form-group">
+    <label for="password" class="sr-only">Password</label>
+    <%= f.password_field :password_confirmation, placeholder: "Password Again", class: "form-control form-control-lg" %>
+  </fieldset>
+  <hr>
+  <%= f.submit "Sign Up", class: "btn btn-primary btn-lg btn-block" %>
+  <%= link_to "Log in", login_url, class: "btn btn-secondary btn-lg btn-block" %>
+<% end %>
